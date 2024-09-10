@@ -21,7 +21,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image..
-      - mvn -X package xyz
+      - mvn clean install
       - docker build -t $IMAGE_REPO_NAME:$VERSION .
       - printf '{"ImageURI":"%s"}'  $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$VERSION  > /imageDetail.json
   post_build:
