@@ -1,68 +1,37 @@
 version: 0.2
-
 env:
   variables:
-    NODE_OPTIONS: "--max_old_space_size=8192"
+    VERSION: "1.0"
+    IMAGE_REPO_NAME: "ms-payless-test-api"
+    AWS_ACCOUNT_ID: "812830320641"
+    AWS_DEFAULT_REGION: "eu-west-1"
 phases:
   install:
+    runtime-versions:
+      java: corretto17
     commands:
-      - apt-get update -y
-      - apt-get install -y jq gettext moreutils
+      - echo Entered the install phase...
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 812830320641.dkr.ecr.eu-west-1.amazonaws.com)
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
-      - aws --version
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
-      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
-      - echo Detected Node.js version $NODE_VERSION
-      - NODE_VERSION=$(jq -r .engines.node package.json)
-      - envsubst < ${APP_BUILD_PATH}/Dockerfile | sponge ${APP_BUILD_PATH}/Dockerfile
-      - cat ${APP_BUILD_PATH}/Dockerfile
+      - echo Nothing to do in the pre_build phase...
+
   build:
     commands:
       - echo Build started on `date`
-      - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:latest -f ${APP_BUILD_PATH}/Dockerfile .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - echo Building the Docker image..
+      - mvn -X package xyz
+      - docker build -t $IMAGE_REPO_NAME:$VERSION .
+      - printf '{"ImageURI":"%s"}'  $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$VERSION  > /imageDetail.json
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - echo Writing image definitions file...
-      - printf '{"ImageURI":"%s"}' $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
-      - |
-        if [ "$ENV" = "proto-prof" ]; then
-          printf '[{"name":"%s-solution-prof-be-cron", "imageUri":"%s"}]' "proto" "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json
-          printf '[{"name":"%s-solution-prof-be-pdf-gen", "imageUri":"%s"}]' "proto" "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitionsPdf.json
-        else
-          printf '[{"name":"%s-solution-be-cron", "imageUri":"%s"}]' "$ENV" "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json
-          printf '[{"name":"%s-solution-be-pdf-gen", "imageUri":"%s"}]' "$ENV" "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitionsPdf.json
-        fi
-      - echo Copy appspec.yaml
-      - cat ${APP_BUILD_PATH}/envs/${ENV}/appspec.yaml > appspec.yaml
-      - echo Copy taskdef.json
-      - cat ${APP_BUILD_PATH}/envs/${ENV}/taskdef.json > taskdef.json
-      - echo Copy buildspec-migrations.yml
-      - cat ${APP_BUILD_PATH}/buildspec-migrations.yml > buildspec-migrations.yml
+      - echo Pushing the Docker image...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$VERSION
 artifacts:
-  files:
-    - appspec.yaml
-    - taskdef.json
-    - buildspec-migrations.yml
-    - imageDetail.json
-    - imagedefinitions.json
-    - imagedefinitionsPdf.json
-  secondary-artifacts:
-    DefinitionArtifactBackend:
-      files:
-        - appspec.yaml
-        - taskdef.json
-        - buildspec-migrations.yml
-    ImageArtifactBackend:
-      files:
-        - imageDetail.json
-        - imagedefinitions.json
-        - imagedefinitionsPdf.json
+    files:
+      - /imageDetail.json
+      - /taskdef.json
+      - /appspec.yaml
+    discard-paths: yes
