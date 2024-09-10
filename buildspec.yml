@@ -27,7 +27,10 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo Pushing the Docker image...
+      - echo Pushing the Docker image version ...$VERSION
+      - echo name $IMAGE_REPO_NAME
+      - echo region $AWS_DEFAULT_REGION
+      - echo account id $AWS_ACCOUNT_ID
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$VERSION
 artifacts:
     files:
