@@ -27,11 +27,9 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo Pushing the Docker image version ...$VERSION
-      - echo name $IMAGE_REPO_NAME
-      - echo region $AWS_DEFAULT_REGION
-      - echo account id $AWS_ACCOUNT_ID
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$VERSION
+      - echo Pushing the Docker image version ...
+      - docker push 812830320641.dkr.ecr.eu-west-1.amazonaws.com/ms-payless-test-api:v1.0.0
+      - cat imageDetail.json
 artifacts:
     files:
       - /imageDetail.json
