@@ -31,9 +31,9 @@ phases:
       - docker push 812830320641.dkr.ecr.eu-west-1.amazonaws.com/ms-payless-test-api:v1.0.0
       - echo Copy appspec.yaml
       - pwd
+      - ls -la
 artifacts:
     files:
-      - /imageDetail.json
-      - /taskdef.json
-      - /appspec.yaml
-    discard-paths: yes
+      - imageDetail.json
+      - taskdef.json
+      - appspec.yaml
