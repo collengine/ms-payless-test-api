@@ -29,6 +29,10 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image version ...
       - docker push 812830320641.dkr.ecr.eu-west-1.amazonaws.com/ms-payless-test-api:v1.0.0
+      - echo Copy appspec.yaml
+      - cat ${APP_BUILD_PATH}/envs/${ENV}/appspec.yaml > appspec.yaml
+      - echo Copy taskdef.json
+      - cat ${APP_BUILD_PATH}/envs/${ENV}/taskdef.json > taskdef.json
 artifacts:
     files:
       - /imageDetail.json
