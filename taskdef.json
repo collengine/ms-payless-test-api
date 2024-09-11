@@ -4,14 +4,14 @@
    "containerDefinitions": [
       {
          "name": "proto-solution-prof-be",
-         "image": "<IMAGE_NAME>",
+         "image": "<IMAGE1_NAME>",
          "cpu": 2048,
          "memory": 8192,
          "essential": true,
          "portMappings": [
             {
-               "containerPort": 3000,
-               "hostPort": 3000
+               "containerPort": 8080,
+               "hostPort": 8080
             }
          ],
          "logConfiguration": {
@@ -26,18 +26,20 @@
             {
                "name": "ENV",
                "value": "proto-prof"
-            },
+            }
+         ],
+         "secrets": [
             {
                "name": "PDF_TASK_DEFINITION_FAMILY",
-               "valueFrom": "arn:aws:ssm:us-west-2:171301263985:parameter/proto/solution-prof-be/PDF_TASK_DEFINITION_FAMILY"
+               "valueFrom": "arn:aws:ssm:eu-west-1:812830320641:parameter/PROD/PRONTO760_URL"
             },
             {
                "name": "PDF_CLUSTER",
-               "valueFrom": "arn:aws:ssm:us-west-2:171301263985:parameter/proto/solution-prof-be/PDF_CLUSTER"
+               "valueFrom": "arn:aws:ssm:eu-west-1:812830320641:parameter/PROD/PRONTO760_URL"
             },
             {
                "name": "PDF_SUBNET_IDS",
-               "valueFrom": "arn:aws:ssm:us-west-2:171301263985:parameter/proto/solution-prof-be/PDF_SUBNET_IDS"
+               "valueFrom": "arn:aws:ssm:eu-west-1:812830320641:parameter/PROD/PRONTO760_URL"
             }
          ]
       }
