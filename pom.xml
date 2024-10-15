@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>co.ke.payless</groupId>
 	<artifactId>ms-payless-test-api</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>ms-payless-test-api</name>
-	<description>A test project to validate api gateway</description>
+	<description>A test project to validate api gateway ii</description>
 	<url/>
 	<licenses>
 		<license/>
