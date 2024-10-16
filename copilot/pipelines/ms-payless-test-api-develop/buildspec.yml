@@ -11,6 +11,7 @@ phases:
   build:
     commands:
       - echo "Run your tests"
+      - mvn clean install
       # - make test
   post_build:
     commands:
