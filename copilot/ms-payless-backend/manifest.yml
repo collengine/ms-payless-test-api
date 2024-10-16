@@ -16,7 +16,7 @@ http:
 
 # Configuration for your containers and service.
 image:
-  location: 812830320641.dkr.ecr.eu-west-1.amazonaws.com/covid-data-ar-app:latest
+#  location: 812830320641.dkr.ecr.eu-west-1.amazonaws.com/covid-data-ar-app:latest
   build: Dockerfile
   # Port exposed through your container to route traffic to it.
   port: 8080
