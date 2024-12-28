@@ -13,7 +13,7 @@ pipeline {
             steps {
             withMaven(maven: 'maven') {
                 /// Run the maven build
-                try{
+                
                     parallel([
                         RunApplication: {
                             sleep 2;
@@ -32,11 +32,7 @@ pipeline {
                             '''
                         }
                     ])
-                    } finally {
-                        sh '''#!/bin/bash
-                                kill `netstat -ltnup | grep :8081 | tr -s " " "\n" | sed -n 7p | sed 's#/.*##'` || true
-                            '''
-                    }
+                    
 
             }
             }
