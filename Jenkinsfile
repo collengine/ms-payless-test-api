@@ -9,7 +9,8 @@ pipeline {
                 
             }
         }
-            stage('Run Application Get APIs') {
+        stage('Run Application Get APIs') {
+            steps {
             withMaven(maven: 'maven') {
                 /// Run the maven build
                 try{
@@ -37,6 +38,7 @@ pipeline {
                             '''
                     }
 
+            }
             }
     }
 
