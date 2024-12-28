@@ -32,13 +32,16 @@ pipeline {
                     steps {
                         sleep 2;
                         withMaven(maven: 'maven') {
-                            sh "mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8081 -DskipTests -Dmaven.test.failure.ignore=true || true"
+                            sh '''#!/bin/bash
+                                mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8081 -DskipTests -Dmaven.test.failure.ignore=true || true"  &
+                                sleep 20 & \
+                                sh "curl  http://localhost:8081/v3/api-docs.yaml > ${GIT_REPO_NAME}.yaml" & \
+                                sleep 5 & \
+                                sh "cat ${GIT_REPO_NAME}.yaml" & \
+                                sudo kill -9 `sudo lsof -i -n -P | grep TCP | grep :8081 | tr -s " " "\n" | sed -n 2p | sed 's#/.*##'`
+                            '''
                         }
-                            sleep 20 && \
-                            sh "curl  http://localhost:8081/v3/api-docs.yaml > ${GIT_REPO_NAME}.yaml" && \
-                            sleep 5 && \
-                            sh "cat ${GIT_REPO_NAME}.yaml" && \
-                            sudo kill -9 `sudo lsof -i -n -P | grep TCP | grep :8081 | tr -s " " "\n" | sed -n 2p | sed 's#/.*##'`  
+                            
                         }
                     }
                 }
