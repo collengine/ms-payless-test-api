@@ -15,7 +15,9 @@ pipeline {
                 stage('RunApplication') {
                     steps {
                         sleep 2;
-                        sh "mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8081 -DskipTests -Dmaven.test.failure.ignore=true || true"
+                        withMaven(maven: 'maven') {
+                          sh "mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8081 -DskipTests -Dmaven.test.failure.ignore=true || true"
+                        }
                     }
                 }
                 stage('GetAPIDocument') {
