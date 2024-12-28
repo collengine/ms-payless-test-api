@@ -33,7 +33,7 @@ pipeline {
                         
                         withMaven(maven: 'maven') {
                         sh '''#!/bin/bash
-                            sleep 2 mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8081 -DskipTests -Dmaven.test.failure.ignore=true || true & sleep 20 & sh "curl  http://localhost:8081/v3/api-docs.yaml > ${GIT_REPO_NAME}.yaml" & sleep 5 & sh "cat ${GIT_REPO_NAME}.yaml"
+                            sleep 2; mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8081 -DskipTests -Dmaven.test.failure.ignore=true || true & sleep 20;  curl  http://localhost:8081/v3/api-docs.yaml > ${GIT_REPO_NAME}.yaml & sleep 5;  cat ${GIT_REPO_NAME}.yaml
                         '''  
                         }
                         
