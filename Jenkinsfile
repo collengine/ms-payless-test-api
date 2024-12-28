@@ -28,7 +28,9 @@ pipeline {
         
         stage('Run Application Get APIs') {
                     steps {
-                         forget 'my lambda'
+                        withMaven(maven: 'maven') {
+                            forget 'my lambda'
+                        }     
                     }
                 
         }
