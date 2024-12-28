@@ -2,9 +2,9 @@ pipeline {
     agent any
    
 
-    // environment {
-    //     GIT_REPO_NAME = scm.getUserRemoteConfigs()[0].getUrl().tokenize('/').last().split("\\.")[0]
-    // }
+    environment {
+        GIT_REPO_NAME = 'test'
+    }
     stages {
         // stage('Checkout') { 
         //     steps {
