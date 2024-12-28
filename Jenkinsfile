@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        GIT_REPO_NAME = scm.getUserRemoteConfigs()[0].getUrl().tokenize('/').last().split("\\.")[0]
+    }
     stages {
         stage('Build') { 
             steps {
@@ -23,9 +26,9 @@ pipeline {
                 stage('GetAPIDocument') {
                     steps {
                         sleep 20;
-                        sh "curl  http://localhost:8081/v3/api-docs.yaml > ${env.GIT_REPO_NAME}.yaml";
+                        sh "curl  http://localhost:8081/v3/api-docs.yaml > ${GIT_REPO_NAME}.yaml";
                         sleep 5;
-                        sh "cat ${env.GIT_REPO_NAME}.yaml";
+                        sh "cat ${GIT_REPO_NAME}.yaml";
                     }
                 }
                 stage('StopApplication') {
