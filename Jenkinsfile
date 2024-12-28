@@ -3,7 +3,22 @@ pipeline {
     environment {
         GIT_REPO_NAME = scm.getUserRemoteConfigs()[0].getUrl().tokenize('/').last().split("\\.")[0]
     }
+
+    environment {
+        GIT_REPO_NAME = scm.getUserRemoteConfigs()[0].getUrl().tokenize('/').last().split("\\.")[0]
+    }
     stages {
+        stage('Checkout') { 
+            steps {
+                cleanWs()
+                scmVars = checkout(scm)
+                BRANCH_NAME = scmVars.GIT_BRANCH
+                SHORT_COMMIT = "${scmVars.GIT_COMMIT[0..7]}"
+                GIT_REPO_NAME = scmVars.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
+
+                
+            }
+        }
         stage('Build') { 
             steps {
                 withMaven(maven: 'maven') {
