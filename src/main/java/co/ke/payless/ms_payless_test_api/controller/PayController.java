@@ -10,10 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/payments")
 public class PayController {
-    @PostMapping(value = "/payments", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/transaction", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public PayResponse makePayment(@RequestBody PayRequest payRequest) {
+        return new PayResponse(200, "Payment successful for " + payRequest.getNonce());
+    }
+
+    @PostMapping(value = "/bills", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public PayResponse makeBill(@RequestBody PayRequest payRequest) {
         return new PayResponse(200, "Payment successful for " + payRequest.getNonce());
     }
 }

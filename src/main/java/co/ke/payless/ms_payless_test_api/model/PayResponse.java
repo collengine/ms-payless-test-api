@@ -9,6 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class PayResponse {
-    private int coed;
+    private int code;
     private String message;
 }
