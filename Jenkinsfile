@@ -48,7 +48,7 @@ pipeline {
                     steps {
                         sleep 20
                         sh '''
-                            sudo lsof -i -n -P | grep TCP | grep :8081 | tr -s " " "\n" | sed -n 2p | sed 's#/.*##'
+                            sudo kill -9 `sudo lsof -i -n -P | grep TCP | grep :8081 | tr -s " " "\n" | sed -n 2p | sed 's#/.*##'` 
                         '''
                     }
                 }
