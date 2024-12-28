@@ -49,7 +49,7 @@ pipeline {
                 stage('StopApplication') {
                     steps {
                         sleep 20
-                        sh '''#!/bin/bash
+                        sh '''
                             sudo lsof -i -n -P | grep TCP | grep :8081 | tr -s " " "\n" | sed -n 2p | sed 's#/.*##'
                         '''
                     }
