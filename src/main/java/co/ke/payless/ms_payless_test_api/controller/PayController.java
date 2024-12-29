@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PayController {
     @PostMapping(value = "/transaction", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public PayResponse makePayment(@RequestBody PayRequest payRequest) {
-        return new PayResponse(200, "Payment successful for " + payRequest.getNonce());
+        return new PayResponse(200, "Payment successful for " );
     }
 
     @PostMapping(value = "/bills", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public PayResponse makeBill(@RequestBody PayRequest payRequest) {
-        return new PayResponse(200, "Payment successful for " + payRequest.getNonce());
+        return new PayResponse(200, "Payment successful for " );
     }
 }
